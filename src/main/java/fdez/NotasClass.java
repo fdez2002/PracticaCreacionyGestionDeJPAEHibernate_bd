@@ -20,6 +20,15 @@ public class NotasClass {
     @Basic
     @Column(name = "nota")
     private BigDecimal nota;
+    public NotasClass(int idAlumno, int idAsignatura, BigDecimal nota){
+        this.idAlumno = idAlumno;
+        this.idAsignatura = idAsignatura;
+        this.nota = nota;
+    }
+
+    public NotasClass() {
+
+    }
 
     public int getId() {
         return id;

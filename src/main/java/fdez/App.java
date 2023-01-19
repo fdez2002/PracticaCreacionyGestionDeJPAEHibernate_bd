@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 
@@ -18,6 +19,7 @@ public class App {
 
         menu();
 
+
     }
 
     private static void menu(){
@@ -27,8 +29,12 @@ public class App {
         System.out.println("2: Eliminación de un alumno");
         System.out.println("3: Creacion de una asignatura");
         System.out.println("4: Eliminación de una asignatura");
+        System.out.println("5: Creacion de una nota");
+        System.out.println("6: Eliminación de una nota");
+        System.out.println("7: Salir");
+
         int opcion = scanner.nextInt();
-        while (opcion <= 0 || opcion >= 5){
+        while (opcion <= 0 || opcion >= 8){
             System.out.println("Seleccione una opción correcta");
             opcion = scanner.nextInt();
 
@@ -45,6 +51,15 @@ public class App {
                 break;
             case 4:
                 pedirEliAsig();
+                break;
+            case 5:
+                crearNota();
+                break;
+            case 6:
+                pedirEliNota();
+                break;
+            case 7:
+                System.exit (0);
                 break;
         }
     }
@@ -96,6 +111,37 @@ public class App {
 
 
     }
+    private static void crearNota(){
+        System.out.println("Id alumno");
+        int idAlum = scanner.nextInt();
+        System.out.println("Id asignatura");
+        int idAsig = scanner.nextInt();
+        BigDecimal nota = scanner.nextBigDecimal();
+
+        guardarNota(idAlum, idAsig, nota);
+        menu();
+
+    }
+    private static void guardarNota(int idAlumno, int idAsugnatura, BigDecimal nota) {
+
+        try {
+            NotasClass notasClass = new NotasClass(idAlumno, idAsugnatura, nota);
+
+            transaction.begin();
+
+            NotasClass notas = entityManager.merge(notasClass);
+
+            entityManager.persist(notas);
+
+            transaction.commit();
+        }catch (Exception e){
+            System.out.println("La asignatura o el alumno no existen");
+            transaction.commit();
+
+        }
+
+
+    }
     private static void pedirEliAlum(){
         System.out.println("Introduce el id del alumno a eliminar:");
         int id = scanner.nextInt();
@@ -136,6 +182,25 @@ public class App {
             System.out.println("Esta asignatura no existe");
             transaction.commit();
             pedirEliAsig();
+        }
+    }
+    private static void pedirEliNota(){
+        System.out.println("Introduce el id del la nota a eliminar:");
+        int id = scanner.nextInt();
+        eliminarNota(id);
+        menu();
+    }
+    private static void eliminarNota(int id) {
+
+        try{
+            transaction.begin();
+
+            entityManager.remove(entityManager.find(NotasClass.class, id));
+
+            transaction.commit();
+        }catch(IllegalArgumentException e){
+            System.out.println("Esta nota no existe");
+            transaction.commit();
         }
     }
 

@@ -13,7 +13,7 @@ public class App {
     static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     static EntityManager entityManager = entityManagerFactory.createEntityManager();
     static EntityTransaction transaction = entityManager.getTransaction();
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);//nos permite utilizar el teclado
 
     public static void main(String[] args){
 
@@ -22,6 +22,11 @@ public class App {
 
     }
 
+    /**
+     * Nos muestra las distintas opciones que podemos hacer.
+     * Comprueba si la opcion existe
+     * Nos redirige a la opcion que le hayamos dicho
+     */
     private static void menu(){
         //menu
         System.out.println("Selecciona una opcion");
@@ -34,6 +39,7 @@ public class App {
         System.out.println("7: Salir");
 
         int opcion = scanner.nextInt();
+        //comprobamos si ese numero existe
         while (opcion <= 0 || opcion >= 8){
             System.out.println("Seleccione una opción correcta");
             opcion = scanner.nextInt();
@@ -63,6 +69,10 @@ public class App {
                 break;
         }
     }
+
+    /**
+     * Pedimos al usuario los distintos datos que conforma a un alumno y se lo enviamos al metodo guardar alumno
+     */
     private static void crearAlumno(){
         System.out.println("Nombre");
         String nombre = scanner.next();
@@ -75,8 +85,14 @@ public class App {
         menu();
 
     }
-    private static void guardarAlumno(String nombre, String apellidos, int edad) {
 
+    /**
+     * Realiza un insert con los datos que ha introducido el usuario en la tabla Alumnos
+     * @param nombre
+     * @param apellidos
+     * @param edad
+     */
+    private static void guardarAlumno(String nombre, String apellidos, int edad) {
         AlumnosClass alumnosClass = new AlumnosClass( nombre, apellidos, edad);
 
         transaction.begin();
@@ -89,6 +105,10 @@ public class App {
 
 
     }
+
+    /**
+     * Pedimos al usaurio los datos que se necesita para crear una asignatura y llama al metodo que hace ese insert
+     */
     private static void crearAsignatura(){
         System.out.println("Nombre");
         String nombre = scanner.next();
@@ -97,6 +117,11 @@ public class App {
         menu();
 
     }
+
+    /**
+     * Obtenemos el datos que el usuario a introducido y creamos la asignatura
+     * @param nombre
+     */
     private static void guardarAsignaturas(String nombre) {
 
         AsignaturasClass asignaturasClass = new AsignaturasClass( nombre);
@@ -111,17 +136,29 @@ public class App {
 
 
     }
+
+    /**
+     * Le pedimos al usuario los datos que se necesitan para crear una nota
+     */
     private static void crearNota(){
         System.out.println("Id alumno");
         int idAlum = scanner.nextInt();
         System.out.println("Id asignatura");
         int idAsig = scanner.nextInt();
+        System.out.println("Nota");
         BigDecimal nota = scanner.nextBigDecimal();
 
         guardarNota(idAlum, idAsig, nota);
         menu();
 
     }
+
+    /**
+     * Obtenemos los datos para crear una asignatura
+     * @param idAlumno
+     * @param idAsugnatura
+     * @param nota
+     */
     private static void guardarNota(int idAlumno, int idAsugnatura, BigDecimal nota) {
 
         try {
@@ -135,19 +172,30 @@ public class App {
 
             transaction.commit();
         }catch (Exception e){
+            //si la asignatura o el alumno no existen, le informaremos al usuario de ello
             System.out.println("La asignatura o el alumno no existen");
+            //terminaremos la ejecucion
             transaction.commit();
 
         }
 
 
     }
+
+    /**
+     * Le pedimos al usuario el id del alumno a eliminar
+     */
     private static void pedirEliAlum(){
         System.out.println("Introduce el id del alumno a eliminar:");
         int id = scanner.nextInt();
         eliminarAlumno(id);
         menu();
     }
+
+    /**
+     * Obtenemos el id que el usuario a introducido  y haremos un remove dcon ese id
+     * @param id
+     */
     private static void eliminarAlumno(int id) {
         try{
 
@@ -158,18 +206,26 @@ public class App {
             transaction.commit();
 
         }catch(IllegalArgumentException e){
+            //si el alumno no existe se lo informaremos al usuario y volveremos al menu principal
             System.out.println("Este alumno no existe");
             transaction.commit();
-            pedirEliAlum();
         }
     }
 
+    /**
+     * Le pedimos al usuario el id de la asifnatura para eliminar
+     */
     private static void pedirEliAsig(){
         System.out.println("Introduce el id del la asignatura a eliminar:");
         int id = scanner.nextInt();
         eliminarAsignatura(id);
         menu();
     }
+
+    /**
+     * Obtenemos el id de la asignatura y haremos un remove en la base de datos
+     * @param id
+     */
     private static void eliminarAsignatura(int id) {
 
         try{
@@ -179,17 +235,23 @@ public class App {
 
         transaction.commit();
         }catch(IllegalArgumentException e){
+            //si la asignatura no existe se lo indicaremos al usuario
             System.out.println("Esta asignatura no existe");
             transaction.commit();
-            pedirEliAsig();
         }
     }
+    //Pedimos al usuario el id de la nota a eliminar
     private static void pedirEliNota(){
         System.out.println("Introduce el id del la nota a eliminar:");
         int id = scanner.nextInt();
         eliminarNota(id);
         menu();
     }
+
+    /**
+     * Obtenemos el id de la nota a eliminar  y haremos un remove con ese id
+     * @param id
+     */
     private static void eliminarNota(int id) {
 
         try{

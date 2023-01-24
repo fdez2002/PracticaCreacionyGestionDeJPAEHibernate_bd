@@ -1,11 +1,9 @@
 package fdez;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -36,7 +34,9 @@ public class App {
         System.out.println("4: Eliminación de una asignatura");
         System.out.println("5: Creacion de una nota");
         System.out.println("6: Eliminación de una nota");
-        System.out.println("7: Salir");
+        System.out.println("7: Mostrar tablas");
+        System.out.println("8: Salir");
+
 
         int opcion = scanner.nextInt();
         //comprobamos si ese numero existe
@@ -65,9 +65,58 @@ public class App {
                 pedirEliNota();
                 break;
             case 7:
+                mostrarAlumnos();
+                mostrarAsignatura();
+                mostrarNotas();
+                break;
+            case 8:
                 System.exit (0);
                 break;
         }
+    }
+
+    /**
+     * Mostramos la tabla alumnos
+     */
+    private static void mostrarAlumnos(){
+        //iniciamos la conexion
+        transaction.begin();
+        //enviamos la consulta
+        Query query = entityManager.createQuery("SELECT p FROM AlumnosClass p");
+        //guardamos el resultado de una consulta en una lista
+        List<AlumnosClass> alumnosClassesList = query.getResultList();
+        //recorremos la lista y mostramos por pantalla
+        for (AlumnosClass alumn : alumnosClassesList){
+            System.out.println(alumn.toString());
+        }
+        //cerramos la conexion
+        transaction.commit();
+    }
+
+    /**
+     * Mostramos la tabla asignatura
+     */
+    private static void mostrarAsignatura(){
+        transaction.begin();
+        Query query = entityManager.createQuery("SELECT p FROM AsignaturasClass p");
+        List<AsignaturasClass> asignaturaClassesList = query.getResultList();
+        for (AsignaturasClass asig : asignaturaClassesList){
+            System.out.println(asig.toString());
+        }
+        transaction.commit();
+    }
+
+    /**
+     * Mostramos la tabla notas
+     */
+    private static void mostrarNotas(){
+        transaction.begin();
+        Query query = entityManager.createQuery("SELECT p FROM NotasClass p");
+        List<NotasClass> notasClassesList = query.getResultList();
+        for (NotasClass nota : notasClassesList){
+            System.out.println(nota.toString());
+        }
+        transaction.commit();
     }
 
     /**

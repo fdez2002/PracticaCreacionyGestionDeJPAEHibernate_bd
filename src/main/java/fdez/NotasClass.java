@@ -85,4 +85,14 @@ public class NotasClass {
         result = 31 * result + (nota != null ? nota.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "NotasClass{" +
+                "id=" + id +
+                ", idAlumno=" + idAlumno +
+                ", idAsignatura=" + idAsignatura +
+                ", nota=" + nota +
+                '}';
+    }
 }

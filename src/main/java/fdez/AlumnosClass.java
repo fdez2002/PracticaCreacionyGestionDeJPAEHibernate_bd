@@ -86,4 +86,14 @@ public class AlumnosClass {
         result = 31 * result + edad;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "AlumnosClass{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", edad=" + edad +
+                '}';
+    }
 }

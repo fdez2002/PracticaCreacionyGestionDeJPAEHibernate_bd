@@ -60,4 +60,12 @@ public class AsignaturasClass {
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "AsignaturasClass{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                '}';
+    }
 }

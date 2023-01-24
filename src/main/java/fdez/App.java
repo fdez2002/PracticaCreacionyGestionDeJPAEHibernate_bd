@@ -65,8 +65,11 @@ public class App {
                 pedirEliNota();
                 break;
             case 7:
+                System.out.println("Alumnos");
                 mostrarAlumnos();
+                System.out.println("Asignaturas");
                 mostrarAsignatura();
+                System.out.println("Notas");
                 mostrarNotas();
                 break;
             case 8:
